@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        Dependency Parsing - HackMD
+    </title>
+    <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
+    <link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:500|Source+Sans+Pro:400,400italic,600,600italic,300italic,300|Source+Serif+Pro|Source+Code+Pro:400,300,500&subset=latin,latin-ext);.hljs{display:block;background:#fff;padding:.5em;color:#333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-emphasis,.hljs-quote,.hljs-string,.hljs-strong,.hljs-template-variable,.hljs-variable{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-attribute,.hljs-bullet,.hljs-literal,.hljs-number,.hljs-symbol{color:#0086b3}.hljs-built_in,.hljs-builtin-name{color:#005cc5}.hljs-name,.hljs-section{color:#63a35c}.hljs-tag{color:#333}.hljs-attr,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-title{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{padding:0 1em;color:#777;border-left:.25em solid #ddd}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.markdown-body h1 .octicon-link,.markdown-body h2 .octicon-link,.markdown-body h3 .octicon-link,.markdown-body h4 .octicon-link,.markdown-body h5 .octicon-link,.markdown-body h6 .octicon-link{color:#000;vertical-align:middle;visibility:hidden}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .octicon-link,.markdown-body h2:hover .anchor .octicon-link,.markdown-body h3:hover .anchor .octicon-link,.markdown-body h4:hover .anchor .octicon-link,.markdown-body h5:hover .anchor .octicon-link,.markdown-body h6:hover .anchor .octicon-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:0;padding-top:.2em;padding-bottom:.2em;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\A0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.markdown-body kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid #ccc;border-bottom-color:#bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0 none}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body .emoji{vertical-align:top}.markdown-body pre{border:inherit!important}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.markdown-body code[data-gist-id]{background:none;padding:0}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg{max-width:100%;height:100%}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body .mark,.markdown-body mark{background-color:#fff1a7}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:758px;margin-top:25px;margin-bottom:-25px;color:#777}.ui-toc{position:fixed;bottom:20px;z-index:10000}.ui-toc-label{opacity:.3;background-color:#ccc;border:none;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff;transition:opacity .2s}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child > ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,\\30D2\30E9\30AE\30CE\89D2\30B4 Pro W3,Osaka,Meiryo,\\30E1\30A4\30EA\30AA,MS Gothic,"\FF2D\FF33   \30B4\30B7\30C3\30AF",sans-serif}.ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,"\FF2D\FF33   \FF30\30B4\30B7\30C3\30AF",sans-serif}.markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang TC,Microsoft JhengHei,\\5FAE\8EDF\6B63\9ED1,sans-serif}.ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,\\5FAE\8EDF\6B63\9ED1UI,sans-serif}.markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,PingFang SC,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,sans-serif}.ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,\\5FAE\8F6F\96C5\9ED1UI,sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:contain}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}.ui-infobar>small>span{line-height:22px}.ui-infobar>small .dropdown{display:inline-block}.ui-infobar>small .dropdown a:focus,.ui-infobar>small .dropdown a:hover{text-decoration:none}.unselectable{-moz-user-select:none;-webkit-user-select:none;-o-user-select:none;user-select:none}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;font-family:Source Sans Pro,Helvetica,Arial,sans-serif;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid"><h3 id="CIS-530---Final-project"><a class="anchor hidden-xs" href="#CIS-530---Final-project" title="CIS-530---Final-project"><span class="octicon octicon-link"></span></a><strong>CIS 530 - Final project</strong></h3><h1 id="Dependency-Parsing"><a class="anchor hidden-xs" href="#Dependency-Parsing" title="Dependency-Parsing"><span class="octicon octicon-link"></span></a>Dependency Parsing</h1><p>Andrea Ceolin, Chenxi Li, Daizhen Li, Mingyang Liu, Linzhi Qi, Veronica Qing Lyu</p><h2 id="Abstract"><a class="anchor hidden-xs" href="#Abstract" title="Abstract"><span class="octicon octicon-link"></span></a>Abstract</h2><p>Finding the dependency path between words is a complex task, but the NLP community has always been interested in this topic. This project explores different methods of implementing a dependency parser for English. An intuitive left-arc algorithm is exploited to build a simple baseline. Two published baselines are then implemented, either from the graph-based or the transition-based paradigm. On top of them, a set of extensions with the introduction of neural networks are tried out for improving the baseline performance.</p><h2 id="1-Introduction"><a class="anchor hidden-xs" href="#1-Introduction" title="1-Introduction"><span class="octicon octicon-link"></span></a>1. Introduction</h2><p>Dependency grammar is an important class of grammar formalism in contemporary speech and language processing systems. Dependency is the notion that linguistic units, e.g. words, are connected to each other by directed links. The purpose of our project is to build a model for dependency parsing of English, and output the dependency path in the format specified by the CoNLL shared task 2017. Conventional evaluation metrics include Labeled Attachment Score(LAS),  Unlabeled Attachment Score(UAS) and so on.</p><p>The structural center of the dependence path is a verb, and all other syntactic units are directly or indirectly related to this verb, as shown in the figure below. The pronoun “I” and the noun “Python” are both linked to the verb “love” with their corresponding dependency path.<br>
+<img src="https://i.imgur.com/Yv9TfHq.png" alt="Figure1 - Parsed sentence for English. In a simple case like this one, both the subject and the object of a sentence depend on the verb"><br>
+<em>Figure1 - Parsed sentence for English. In a simple case like this one, both the subject and the object of a sentence depend on their verb.</em></p><p>The parser will take in data as .conllu form, with sentences and their tokens including Id; Form; Lemma; UPosTag; XPosTag;Feats; Head; DepRel; Deps; Misc. The parser will process the sentences and determine the dependency path between each pair and the linguistic units and label them.</p><p>The reason why we picked this topic to be our final project is that the multilingual dependency parser in CoNLL shared task 2018 interested us the most. As the project went along, we found that the multilingual parser requires a significant amount of features and the training time is also very long. Therefore, we trimmed the project down to just a dependency parser for English and continuously worked to improve the performance of our models.</p><h2 id="2-Literature-review"><a class="anchor hidden-xs" href="#2-Literature-review" title="2-Literature-review"><span class="octicon octicon-link"></span></a>2. Literature review</h2><p>There are many different approaches to Dependency Parsing, and they are radically different when it comes to the model architecture.</p><p>For instance, one could try a simple unsupervised rule-based approach by hard-coding some rules connecting Part of Speech (POS) together. This was the case of the algorithm in Garcia and Gamallo (2017), which implemented a rule-based parser which encoded syntactic rules found in Romance languages, called MetaRomance. MetaRomance is a delexicalized model that runs on Universal POS tags. Since it’s a rule-based model, it requires no training data. 150 linguistic rules were encoded in the algorithm. The parser achieved good results for Romance languages (UAS: 71% for Italian, 69% for Portuguese and Spanish, 65 for Catalan, 63% for Galician and French), but its performance went drastically down when tested for non-Indoeuropean languages (UAS: 51% for Indonesian, 46% for Hungarian, 38% for Hebrew, 37% for Estonian and Arabic were the best results). Interestingly, for Japanese the UAS performance went as down as 8%.</p><p>A different approach has been proposed in McDonald and Pereira (2005). This paper presents an algorithm for parsing dependency trees using as a model maximum spanning trees in directed graphs. First, the authors factor the score of a dependency tree as the sum of the scores of all edges in the tree. The score of each edge is the dot product between feature representation of the edge and a weight vector parameter. Then, the parser uses online large-margin learning to learn parameter by narrowing the score of true denpendency tree with current highest score.</p><p>This method can achieve 84% in Accuracy and 32% in completeness in Czech. For non-projective Czech sentences, their method get 6% improvement from projective method and also get 14% proportion exactly correct. For English, they can achieve state-of-art performance: 90% in Accuracy and 33% in completeness. Their Accuracy metric is equivalent to LAS metric in Conll2017.</p><p>More recently, a variety of more advanced neural network architectures have been used to address the task. Dozat et al. (2016, 2017) describe a graph-based neural dependency parser implemented by Stanford for the CoNLL 2017 shared task. Their parser employs the so-called “deep-biaffine” mechanism to produce POS tags and labeled dependency parses from segmented and tokenized sequences of words. It also includes a character-based representation that uses an LSTM to produce embeddings from sequences of characters, in order to address the issue of rare word. The parser was ranked first among all systems submitted to the shared task, with an averaged LAS score of 76% for 49 languages.</p><p>A similar approach has been developed in Shi et. al. (2017), which presents a character-level bi-directional LSTM as lexical feature extractor and combining graph-based and transition-based global parsing paradigms. The system relies on the baseline tokenizers and focuses only on parsing, leveraging bi-LSTMs to generate compact features for both graph-based and transition-based parsing frameworks. One graph-based paradigm and two transition-based paradigms are used. The system performs four procedures, UDPipe pre-processing, feature extraction by character bi-LSTM, unlabeled parsing with global parsing paradigms and arc labeling. The parser achieved LAS F1 score of 75%, with 47% for surprise languages and 61% for small treebanks. The system ranked second among all systems submitted to the shared task, and first for both surprise languages and small treebanks.</p><h2 id="3-Experimental-design"><a class="anchor hidden-xs" href="#3-Experimental-design" title="3-Experimental-design"><span class="octicon octicon-link"></span></a>3. Experimental design</h2><h3 id="31-Data"><a class="anchor hidden-xs" href="#31-Data" title="31-Data"><span class="octicon octicon-link"></span></a>3.1 Data</h3><p>Our training, development and testing data are retrieved from the database of the <a href="https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-2184" target="_blank">CoNLL 2017 Shared Task</a>. For this project, we worked with the English treebank.</p><p>The sentences have been manually annotated using the <em>.conllu</em> format. In this format, the first row contains the sentence to be parsed. Then in the following rows, the first column contains the index of the word, the second column denotes the word, the fifth column shows the Part-of-Speech of the word and the seventh column contains the head of the word. For the purposes of our task, we can ignore all the other columns, which usually provide additional information about the arcs, or a more fine-grained description of the words and the POS which is language specific.</p><pre><code>#text = Al-Zaman : American forces killed Shaikh Abdullah al-Ani, the preacher at the mosque in the town of Qaim, near the Syrian border.
+1	Al		_	_	NNP	_	0	_	_	_
+2	-		_	_	HYPH	_	1	_	_	_
+3	Zaman		_	_	NNP	_	1	_	_	_
+4	:		_	_	:	_	1	_	_	_
+5	American	_	_	JJ	_	6	_	_	_
+6	forces		_	_	NNS	_	7	_	_	_
+7	killed		_	_	VBD	_	1	_	_	_
+8	Shaikh		_	_	NNP	_	7	_	_	_
+9	Abdullah	_	_	NNP	_	8	_	_	_
+10	al		_	_	NNP	_	8	_	_	_
+11	-		_	_	HYPH	_	8	_	_	_
+12	Ani		_	_	NNP	_	8	_	_	_
+13	,		_	_	,	_	8	_	_	_
+14	the		_	_	DT	_	15	_	_	_
+15	preacher	_	_	NN	_	8	_	_	_
+16	at		_	_	IN	_	18	_	_	_
+17	the		_	_	DT	_	18	_	_	_
+18	mosque		_	_	NN	_	7	_	_	_
+19	in		_	_	IN	_	21	_	_	_
+20	the		_	_	DT	_	21	_	_	_
+21	town		_	_	NN	_	18	_	_	_
+22	of		_	_	IN	_	23	_	_	_
+23	Qaim		_	_	NNP	_	21	_	_	_
+24	,		_	_	,	_	21	_	_	_
+25	near		_	_	IN	_	28	_	_	_
+26	the		_	_	DT	_	28	_	_	_	
+27	Syrian		_	_	JJ	_	28	_	_	_
+28	border		_	_	NN	_	21	_	_	_
+29	.		_	_	.	_	1	_	_	_
+</code></pre><p>In the test file, the seventh column is missing, and we are required to fill it with a number that refers to its heads.<br>
+The dependency tree can be visualized on <a href="https://explosion.ai/demos/displacy?text=Al-Zaman%20%3A%20American%20forces%20killed%20Shaikh%20Abdullah%20al-Ani%2C%20the%20preacher%20at%20the%20mosque%20in%20the%20town%20of%20Qaim%2C%20near%20the%20Syrian%20border.%20&amp;model=en_core_web_sm&amp;cpu=1&amp;cph=0" target="_blank">displaCy</a>.</p><h3 id="32-Evaluation-Metric"><a class="anchor hidden-xs" href="#32-Evaluation-Metric" title="32-Evaluation-Metric"><span class="octicon octicon-link"></span></a>3.2 Evaluation Metric</h3><p>A simple evaluation script was provided by the CoNLL 2017 organizers to the participant of the shared task <a href="http://universaldependencies.org/conll17/evaluation.html" target="_blank">here</a>. This script takes two <em>.conllu</em> files, a gold file and a predicted output file, and calculates the F1-score (which in dependency parsing is defines as <strong>UAS, Unlabel Attachment Score</strong>):</p><pre><code>py score.py goldconllufile predconllufile
+</code></pre><p>UAS is a standard evaluation metric in parsing: the percentage of words that are assigned the correct syntactic head. Precision, P, is defined as the number of correct relations divided by the number of system-produced nodes. Recall, R, is defined as the number of correct relations divided by the number of gold-standard nodes. Finally, UAS is calculated as the F1 score=2PR/(P+R). The goal of our task is maximizing the UAS score.</p><h3 id="33-Simple-Baseline"><a class="anchor hidden-xs" href="#33-Simple-Baseline" title="33-Simple-Baseline"><span class="octicon octicon-link"></span></a>3.3 Simple Baseline</h3><p>Languages tend to have a strong preference for ‘harmonic’ word order: for instance, languages in which articles precedes nouns usually also have prepositions preceding nouns. For this reason, one needs to determine how many dependencies can be detected just by orienting the arcs in the direction that is favored by the language. English is a language that usually has the head of the constituent on the right: for instance, elements that are related to nouns as determiners, adjective or other nouns in compounds always come first, and similarly subject and adverbs tend to precede the verb they relate to.</p><p><img src="https://image.ibb.co/me4rMx/English.png" alt="Parsed sentence for English. Most of the arcs have their head on the right"><br>
+<em>Figure2 - Parsed sentence for English. Most of the words have their head on the right</em></p><p>With this purpose, we built a simple baseline for which every word has as a head the word on its right. This strategy allowed us to obtain a 30% UAS on the English dataset. Since these ‘harmony’ tendencies are more or less universal, one can assume that any parser for any language should yield a performance above this number to be more informative than a simple majority baseline.</p><h2 id="4-Experimental-results"><a class="anchor hidden-xs" href="#4-Experimental-results" title="4-Experimental-results"><span class="octicon octicon-link"></span></a>4. Experimental results</h2><h3 id="41-Published-Baselines"><a class="anchor hidden-xs" href="#41-Published-Baselines" title="41-Published-Baselines"><span class="octicon octicon-link"></span></a>4.1 Published Baselines</h3><p>In this section, we present our reimplementation of two different systems as our published baseline, a graph-based one (following McDonald et. al., 2005) and a transition-based one (following Chen and Manning, 2014).</p><h4 id="411-Graph-based-approach"><a class="anchor hidden-xs" href="#411-Graph-based-approach" title="411-Graph-based-approach"><span class="octicon octicon-link"></span></a>4.1.1 Graph-based approach</h4><p>Following the graph-based approach developed by McDonald et. al.(2005), we factor the score of a dependency tree as the sum of the scores of all edges in the tree. And the score of each edge is the dot product between feature representation of the edge (i.e. [embedding of word1, pos of word1, embedding of word2, pos of word2]) and a weight vector (parameter). We use Margin Infused Relaxed Algorithm(MIRA) algorithm to learn the parameter by narrowing the score of true denpendency tree with current highest score. The algorithm achieved a UAS score of 69.36% on the test set, which has doubled the all-right baseline score.</p><h4 id="412-Transition-based-approach"><a class="anchor hidden-xs" href="#412-Transition-based-approach" title="412-Transition-based-approach"><span class="octicon octicon-link"></span></a>4.1.2 Transition-based approach</h4><p>In addtion to the graph-based method, we also reimplemented a transition-based model following the work of the Stanford NLP group (Chen and Manning, 2014), where a parse tree is represented in terms of a series of configurations. A configuration C = (s; b; A) consists of a stack s, a buffer b, and a set of dependency arcs A. For the initial configuration, we have a stack with &lt;Root&gt; and a buffer full of all the words with the arc set A empty. As the parsing proceeds, words are moved from the buffer to the stack, and appropriate actions (LEFT-arc, RIGHT-arc or SHIFT) are taken in order to produce corresponding arcs. For the terminal configuration, we are left with a stack with one token &lt;Root&gt; still, an empty buffer, and a set A of all arcs produced during parsing.</p><p>The Stanford system is known to be the first algorithm to implement transition-based parsing with neural network. Our reimplementation has a UAS of 77.23% on the test set. In comparison to the original paper, there is still a gap between the performance of our system and theirs, since the latter achieved a UAS of 88.00% on English data. It could be attributable to the fact that our implementation of the activation function (i.e. the Cube function, as described in their paper) has failed to yeild sensible outputs, and consequently we used a more advanced architecture (Bi-LSTM) instead.</p><p>Bi-LSTM is the most popular method for sequence to sequence model. In the case of an LSTM, for each element in the sequence, there is a corresponding hidden state， which in principle can contain information from arbitrary points earlier in the sequence. We can use the embedded transition states as inputs and use the output to predict the transitions.</p><p>Another reason for the gap between our model’s performance and the original paper is that the dataset that the authors worked on is the English Penn Treebank (over 40,000 sentences), whereas we are using a relatively smaller dataset provided by the Universal Dependency Project (16,622 senteneces in total). These might be potential reasons that the results are not quite comparable.</p><h3 id="42-Extensions"><a class="anchor hidden-xs" href="#42-Extensions" title="42-Extensions"><span class="octicon octicon-link"></span></a>4.2 Extensions</h3><h4 id="421-Graph-based-model"><a class="anchor hidden-xs" href="#421-Graph-based-model" title="421-Graph-based-model"><span class="octicon octicon-link"></span></a>4.2.1 Graph-based model</h4><h5 id="Biaffine-transformation"><a class="anchor hidden-xs" href="#Biaffine-transformation" title="Biaffine-transformation"><span class="octicon octicon-link"></span></a>Biaffine transformation</h5><p>The first and only extension we tried for graph-based model is the use of biaffine transformation, the intuition of which is from Dozat et. al. (2016, 2017). Biaffine transformation is a second order method compared with linear model. The advantage is that it can represent the interactions of two nodes of a edge. Recent paper like c2l2 from Cornell, graph-based model from Stanford achieve great improvements. Also if we combine this method with word/char embedding, this model can kind of automatically give good feature representation, and do not need feature engineering like previous methods.</p><p>The performance acheived by the extened baseline is as follows:</p><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>UAS on test set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baseline</td>
+<td>69.36%</td>
+</tr>
+<tr>
+<td>Biaffine transformation</td>
+<td>75.11%</td>
+</tr>
+</tbody>
+</table><p><em>Table1 - Performance of different versions of graph-based models (with/without extension) on the test set</em></p><h4 id="422-Transition-based-model"><a class="anchor hidden-xs" href="#422-Transition-based-model" title="422-Transition-based-model"><span class="octicon octicon-link"></span></a>4.2.2 Transition-based model</h4><h5 id="Convolutional-architecture"><a class="anchor hidden-xs" href="#Convolutional-architecture" title="Convolutional-architecture"><span class="octicon octicon-link"></span></a>Convolutional architecture</h5><p>The second extension we tried is to use CNN to reduce variance in frequency of input features before passing it to biLSTM layers. This extension is inspired by <em>Convolutional Neural Networks for Sentence Classification</em>. In sentence and text classification, CNN is used to extract features from more dimensions and produce a higher order representation before passing it to LSTM layer.</p><p>In our method, the features are the top 20 words from stack and buffer in each cofiguration and their corresponding POS tags. We treat each word/POS tag as one feature and represent the features in word embeddings and POS tag embeddings with dimension 100 and 17 respectively. In this way, we will have a fixed embedding matrix for both word features and POS tag features, which is important for CNN. Both word embedding matrix(20*100) and POS tag matrix(20*17), will pass 2 convolutional layers with a max pooling layer for each. Then with a linear dimension reduction layer, the output will be maped in size 1*200 and 1*17 for word embedding matrix and POS tag matrix. Then these output will be concatenated together and be treated as the input for the LSTM layer.</p><p>However, the results for using cnn is not good. The reson should be that in text classification, we are using cnn since there are similar words and expression in the text if you have the same topic. Thus cnn can capture similar features in each text with higher dimension representation.</p><p>But in the dependency parsing, we are finding the dependency tree, which is like the rule behind the words, and the words themselves are not necessarily similar to each other. So the cnn features extracted from the embeddings will not give effective information.</p><h5 id="POS-embeddings"><a class="anchor hidden-xs" href="#POS-embeddings" title="POS-embeddings"><span class="octicon octicon-link"></span></a>POS embeddings</h5><p>The third extension we tried is to use POS embeddings as features. Namely, we trained 20-dimensional POS embeddings based on the sentences from the training set, and used them as part of the input features to our bi-LSTM network. The intuition is to capture potential contextual information encoded in POS tag sequences, instead of representing every tag as an one-hot vector.</p><p>The outcome of adding the extension turned out not satisfactory though. With the same number of training epochs (i.e. 10 epochs), it achieved a UAS score of 74.89%. Though the performance surpassed the baseline, it’s not better than the original bi-LSTM model with one-hot POS vectors.</p><h5 id="Lemmatization"><a class="anchor hidden-xs" href="#Lemmatization" title="Lemmatization"><span class="octicon octicon-link"></span></a>Lemmatization</h5><p>We also tried to make use of lemmatization as an extension of the baseline. Specifically, on top of the currently best-performing bi-LSTM model, we used word lemmas instead of word forms provided in the CoNLLU data, and represented the lemmas using word embeddings subsequently as the part of the input to our neural network. We expect that performing lemmatization would lower the proportion of out-of-vocabulary (OOV) words arising from inflection or derivation, and thus generate more effective embeddings.</p><p>The performance of the model with lemmatization added as an extension is 76.92% on the test set.</p><h5 id="Summary"><a class="anchor hidden-xs" href="#Summary" title="Summary"><span class="octicon octicon-link"></span></a>Summary</h5><p>In comparison, the performance of all the different versions of transition-based model is summrized in the following table:</p><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>UAS on test set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baseline (Bi-LSTM)</td>
+<td>77.23%</td>
+</tr>
+<tr>
+<td>Bi-LSTM + CNN</td>
+<td>75.11%</td>
+</tr>
+<tr>
+<td>Bi-LSTM + POS embedding</td>
+<td>74.89%</td>
+</tr>
+<tr>
+<td>Bi-LSTM + lemmatization</td>
+<td>76.92%</td>
+</tr>
+</tbody>
+</table><p><em>Table2 - Performance of different versions of transition-based models (with different extension) on the test set</em></p><p>As is seen from the table, though we tried multiple types of extension, the best performance is achieved by the relatively simple version still: Bi-LSTM with 77.23% UAS on test set.</p><h2 id="5-Conclusions"><a class="anchor hidden-xs" href="#5-Conclusions" title="5-Conclusions"><span class="octicon octicon-link"></span></a>5. Conclusions</h2><p>In this project, we explored the task of dependency parsing on a monolingual corpus, using three different approaches: an intuitive majority baseline, a graph-based model, and a transition-based model. With the initial UAS of 30% acheived by the simple baseline, we are then able to double the baseline performance with the reimplementation of two published models following the graph-based or transition-based paradigm. On the basis of that, we experimented with a set of extensions from the perspective of feature engeneering and architecture manipulation of the network, among which, unfortunately, only a few turned out to work satisfactorily. Eventually, the optimal parser that we have is the Bi-LSTM transition-based model, which ahieved a UAS of 77.23% on the test set.</p><h2 id="Acknowledgements"><a class="anchor hidden-xs" href="#Acknowledgements" title="Acknowledgements"><span class="octicon octicon-link"></span></a>Acknowledgements</h2><p>We would like to show our gratitude to the TA, Stephen Mayhew, for all his supportive feedback during the course of this research.</p><h2 id="References"><a class="anchor hidden-xs" href="#References" title="References"><span class="octicon octicon-link"></span></a>References</h2><ol>
+<li>Chen, D., &amp; Manning, C. (2014). A fast and accurate dependency parser using neural networks. In Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP) (pp. 740-750).</li>
+<li>Dozat, T., &amp; Manning, C. D. (2016). Deep biaffine attention for neural dependency parsing. arXiv preprint arXiv:1611.01734.</li>
+<li>Dozat, T., Qi, P., &amp; Manning, C. D. (2017). Stanford’s Graph-based Neural Dependency Parser at the CoNLL 2017 Shared Task. Proceedings of the CoNLL 2017 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies, 20-30.</li>
+<li>Garcia, M., &amp; Gamallo, P. (2017). A rule-based system for cross-lingual parsing of Romance languages with Universal Dependencies. Proceedings of the CoNLL 2017 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies, 274-282.</li>
+<li>R. McDonald, F. Pereira. (2005).  Non-projective Dependency Parsing using Spanning Tree Algorithms. In Proc. of the Joint Conf. on Human Language Technology and Empirical Methods in Natural Language Processing (HLT/EMNLP).</li>
+<li>Shi, T., Wu, F. G., Chen, X., &amp; Cheng, Y. (2017). Combining global models for parsing Universal Dependencies. Proceedings of the CoNLL 2017 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies, 31-39.</li>
+<li>Kim, Y. (2014). Convolutional neural networks for sentence classification. arXiv preprint arXiv:1408.5882.</li>
+</ol></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav"><li class=""><a href="#CIS-530---Final-project" title="CIS 530 - Final project">CIS 530 - Final project</a><ul class="nav"><li class=""><a href="#Dependency-Parsing" title="Dependency Parsing">Dependency Parsing</a><ul class="nav"><li class=""><a href="#Abstract" title="Abstract">Abstract</a></li><li class=""><a href="#1-Introduction" title="1. Introduction">1. Introduction</a></li><li class=""><a href="#2-Literature-review" title="2. Literature review">2. Literature review</a></li><li><a href="#3-Experimental-design" title="3. Experimental design">3. Experimental design</a></li></ul></li></ul></li><li><a href="#31-Data" title="3.1 Data">3.1 Data</a></li><li><a href="#32-Evaluation-Metric" title="3.2 Evaluation Metric">3.2 Evaluation Metric</a></li><li><a href="#33-Simple-Baseline" title="3.3 Simple Baseline">3.3 Simple Baseline</a><ul class="nav"><li><a href="#4-Experimental-results" title="4. Experimental results">4. Experimental results</a></li></ul></li><li><a href="#41-Published-Baselines" title="4.1 Published Baselines">4.1 Published Baselines</a></li><li><a href="#42-Extensions" title="4.2 Extensions">4.2 Extensions</a><ul class="nav"><li><a href="#5-Conclusions" title="5. Conclusions">5. Conclusions</a></li><li><a href="#Acknowledgements" title="Acknowledgements">Acknowledgements</a></li><li><a href="#References" title="References">References</a></li></ul></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;"  >
+        <div class="toc"><ul class="nav"><li class=""><a href="#CIS-530---Final-project" title="CIS 530 - Final project">CIS 530 - Final project</a><ul class="nav"><li class=""><a href="#Dependency-Parsing" title="Dependency Parsing">Dependency Parsing</a><ul class="nav"><li class=""><a href="#Abstract" title="Abstract">Abstract</a></li><li class=""><a href="#1-Introduction" title="1. Introduction">1. Introduction</a></li><li class=""><a href="#2-Literature-review" title="2. Literature review">2. Literature review</a></li><li><a href="#3-Experimental-design" title="3. Experimental design">3. Experimental design</a></li></ul></li></ul></li><li><a href="#31-Data" title="3.1 Data">3.1 Data</a></li><li><a href="#32-Evaluation-Metric" title="3.2 Evaluation Metric">3.2 Evaluation Metric</a></li><li><a href="#33-Simple-Baseline" title="3.3 Simple Baseline">3.3 Simple Baseline</a><ul class="nav"><li><a href="#4-Experimental-results" title="4. Experimental results">4. Experimental results</a></li></ul></li><li><a href="#41-Published-Baselines" title="4.1 Published Baselines">4.1 Published Baselines</a></li><li><a href="#42-Extensions" title="4.2 Extensions">4.2 Extensions</a><ul class="nav"><li><a href="#5-Conclusions" title="5. Conclusions">5. Conclusions</a></li><li><a href="#Acknowledgements" title="Acknowledgements">Acknowledgements</a></li><li><a href="#References" title="References">References</a></li></ul></li></ul></div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
